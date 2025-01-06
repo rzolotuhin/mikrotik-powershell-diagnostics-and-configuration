@@ -230,11 +230,11 @@ $commands.add("информация о LTE", "do command={interface lte info 0 o
             }
         }
 
-        $answer = $mikrotik.console('interface lte monitor 0 once')
+        $answer = $mikrotik.console('interface lte monitor 0 once') -replace "(\s+)?(imei|imsi|uicc):\s.+",""
         
         [System.Console]::Clear()
         [log]::message("")
-        foreach($str in ($answer -replace "(\s+)?(imei|imsi|uicc):\s.+","") -split "`n") {
+        foreach($str in $answer -split "`n") {
             if ($str -match "^(?<prefix>\s+)?(?<param>(rssi|rsrp|rsrq|sinr)):\s+(?<value>\-?\d+)(?<postfix>[a-z]+)") {
                 $backgroundColor = "Red"
                 $foregroundColor = "Black"
